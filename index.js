@@ -1,7 +1,13 @@
 function fetchBooks() {
   return fetch("https://anapioficeandfire.com/api/books")
-    .then((resp) => resp.json())
-    .then((json) => renderBooks(json));
+    .then((resp) => {
+      if (!resp.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return resp.json();
+    })
+    .then((json) => renderBooks(json))
+    .catch((error) => console.error("Error fetching books:", error));
 }
 
 function renderBooks(books) {
@@ -14,4 +20,4 @@ function renderBooks(books) {
   document.body.appendChild(titlesList);
 }
 
-fetchBooks()
+fetchBooks();
